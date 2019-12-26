@@ -1061,8 +1061,9 @@ def updatelink(src, dest, log):
     log['links'].insert(0, dest)
     #print ('Linking "%s" to "%s"' % (src, dest))
 
+    src_l = src.lower();
     # wine can't handle symlinked exes (but dlls are fine)
-    if src.lower().endswith(".exe"):
+    if src_l.endswith(".exe") or src_l.endswith(".esm") or src_l.endswith(".esp") or src_l.endswith(".pex"):
         shutil.copyfile(src, dest)
     else:
         os.symlink(src, dest)
@@ -1101,10 +1102,10 @@ def unvfs(p):
     i = 1
     for l in log['links']:
         l = winpath(l)
-        if os.path.islink(l):
+        if 1 or os.path.islink(l):
             prettyprint(i, l.replace(head, ""))
             iodelay(0.0005)
-            os.unlink(l)
+        os.unlink(l)
         i += 1
     stop_prettyprint(t)
 
